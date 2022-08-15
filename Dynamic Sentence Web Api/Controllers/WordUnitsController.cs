@@ -28,18 +28,12 @@ namespace Dynamic_Sentence_Web_Api.Controllers
             return await _context.WordUnits.ToListAsync();
         }
 
-        // GET: api/WordUnits/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<WordUnit>> GetWordUnit(int id)
+        // GET: api/WordUnits/WordType
+        [HttpGet("{WordType}")]
+        public async Task<ActionResult<IEnumerable<WordUnit>>> GetWordUnit(string wordType)
         {
-            var wordUnit = await _context.WordUnits.FindAsync(id);
-
-            if (wordUnit == null)
-            {
-                return NotFound();
-            }
-
-            return wordUnit;
+            var wordsList = await _context.WordUnits.Include(w => w.WordType).ToListAsync();
+            return wordsList.Where(w => w.WordType.Type == wordType).Select(w => w).ToList();
         }
 
         // PUT: api/WordUnits/5

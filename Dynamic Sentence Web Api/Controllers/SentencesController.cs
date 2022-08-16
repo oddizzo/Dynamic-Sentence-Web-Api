@@ -78,12 +78,15 @@ namespace Dynamic_Sentence_Web_Api.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Sentence>> PostSentence(Sentence sentence)
+        public async Task<ActionResult<Sentence>> PostSentence([FromBody] string sentence)
         {
-            _context.Sentences.Add(sentence);
+            Sentence newSentence = new Sentence();
+            newSentence.Id = 0;
+            newSentence.Words = sentence;
+            _context.Sentences.Add(newSentence);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetSentence", new { id = sentence.Id }, sentence);
+            return CreatedAtAction("GetSentence", new { id = newSentence.Id }, newSentence);
         }
 
         // DELETE: api/Sentences/5

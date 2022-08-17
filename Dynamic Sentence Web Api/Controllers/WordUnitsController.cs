@@ -25,7 +25,7 @@ namespace Dynamic_Sentence_Web_Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WordUnit>>> GetWordUnits()
         {
-            return await _context.WordUnits.ToListAsync();
+            return await _context.WordUnits.Include(w => w.WordType).ToListAsync();
         }
 
         // GET: api/WordUnits/WordType
